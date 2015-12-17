@@ -55,10 +55,14 @@ document.addEventListener('DOMContentLoaded', function() {
       var msg = new SpeechSynthesisUtterance(input.value);
       // This promise Object is event based, not callback.  Notice we're assigning a function to 
       // the 'event' onend. It will get passed an event object once completed.
+      msg.onend = success;
+      /* Below is a longer way to write the success callback.  Above we don't need the () backets
+       * to call the function because it will be invoked when the callback gets called from the Promise
       msg.onend = function(event) {
         // calling the first callback
         success(event);
       };
+      */
       // This plays the message
       speechSynthesis.speak(msg);
     });
