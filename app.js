@@ -17,23 +17,41 @@ angular.module('SmashBoard', []).controller('TvController', function($scope, $ht
   LocationService.getGeolocation().then(function(geoposition) {
     // Assigning the coordinates returned from 'getGeolocation()' to the $scope
     $scope.coordinates = geoposition.coords;
+    // Must have this for changes to take affect in the window's $scope
+    $scope.$digest();
+  }, function() {
+    $scope.coordinates = { latitude: 'N/A', longitude: 'N/A' };
+    $scope.$digest();
   });
   
   // Here we put the code for getting the geolocation data into a separate service, although
   // we could have left it in the controller above, we want to have slim, modular/reusable code
 }).factory('LocationService', function($q) {
   return {
+// NOTE: This is an older way which also works
+//    getGeolocation: function() {
+//      // A deferred object used to represent getting the location by an asynchronous call
+//      var getGeo = $q.defer();
+//      window.navigator.geolocation.getCurrentPosition(function(geo) {
+//        // This only gets called once the position is returned as 'geo', a.k.a. the callback function
+//        getGeo.resolve(geo);
+//      });
+//      // Returning the outcome of 'getCurrentPosition()'
+//      return getGeo.promise;
+//    }
     // Returns the Geoposition Object from the browser's getCurrentPosition() call.
     // Notice this function is callback-based.
     getGeolocation: function() {
       // A deferred object used to represent getting the location by an asynchronous call
-      var getGeo = $q.defer();
-      window.navigator.geolocation.getCurrentPosition(function(geo) {
-        // This only gets called once the position is returned as 'geo', a.k.a. the callback function
-        getGeo.resolve(geo);
+      return new Promise(function(resolve, reject) {
+        window.navigator.geolocation.getCurrentPosition(function(geo) {
+          // This only gets called once the position is returned as 'geo', a.k.a. the callback function
+          resolve(geo);
+        }, function(positionError) {
+          console.debug(arguments);
+          reject();
+        });
       });
-      // Returning the outcome of 'getCurrentPosition()'
-      return getGeo.promise;
     }
   }
 });
