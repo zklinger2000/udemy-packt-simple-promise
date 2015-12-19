@@ -18,14 +18,24 @@
         <h1>SmashBoard</h1>
         <p>Promises, promises, not only words...</p>
       </div>
-      <!-- Speech Synthesis API: This is our plain Javascript promise -->
       <div class="row">
+        <!-- Speech Synthesis API: This is our plain Javascript promise -->
         <div class="col-xs-6">
           <div class="panel panel-success">
             <div class="panel-heading">Talk to me</div>
             <div class="panel-body">
               <input id="say-what">
               <p>Status: <span id="status"></span></p>
+            </div>
+          </div>
+        </div>
+        <!-- 5 second challenge: This is our plain Javascript promise -->
+        <div class="col-xs-6">
+          <div class="panel panel-success">
+            <div class="panel-heading">The 5 second challenge</div>
+            <div class="panel-body">
+              <button id="click-me" class="btn btn-success">Click Me</button>
+              <p>Last attempt: <span id="last"></span></p>
             </div>
           </div>
         </div>

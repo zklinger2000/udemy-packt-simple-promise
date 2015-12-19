@@ -38,6 +38,37 @@ angular.module('SmashBoard', []).controller('TvController', function($scope, $ht
   }
 });
 
+document.addEventListener('DOMContentLoaded', function(event) {
+  var click = document.getElementById('click-me');
+  var last = document.getElementById('last');
+  
+  click.addEventListener('mousedown', function() {
+    // Create a Promise Object
+    var clicking = new Promise(function executor(resolve, reject) {
+      var start = new Date(); // a Date representing now
+      // Add event listener for mousing 'out' of the DOM element
+      click.onmouseout = function() {
+        console.debug('Mouse out');
+        reject('You left the button');
+      };
+      // Add event listener for releasing the mouse click
+      click.onmouseup = function() {
+        console.debug('Mouse out');
+        resolve(new Date() - start);
+      };
+    });
+    // Handle the outcome of our Promise.  It gets passed what we gave to 
+    // resolve() above, here we're calling it 'duration'
+    clicking.then(function(duration) {
+      // Set the element's text to the time that had elapsed when you released the mouse click
+      last.innerText = (duration/1000) + ' seconds';
+      // this is the failure, or the 2nd callback the above Promise Object expects as 'reject'
+    }, function(message) {
+      window.alert('Challenge incomplete');
+    });
+  });
+});
+
 // Add an Event Listener to use a pure Javascript promise Object
 document.addEventListener('DOMContentLoaded', function() {
   // Assigning the element with id='say-what'
