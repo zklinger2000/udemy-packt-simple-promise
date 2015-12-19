@@ -38,6 +38,23 @@ angular.module('SmashBoard', []).controller('TvController', function($scope, $ht
   }
 });
 
+// This will use the browser-native function .getBattery() which returns a 
+// Promise object where only Resolve needs to be handled.
+document.addEventListener('DOMContentLoaded', function(event) {
+  var charging = document.getElementById('charging');
+  var level = document.getElementById('battery-level');
+  // Getting the battery Promise
+  // According to the docs, getBattery() always returns only a resolved promise (not a rejected one, ever)
+  //var batteryPromise = navigator.getBattery();
+  navigator.getBattery().then(function(batteryManager) {
+    console.log(batteryManager);
+    charging.innerText = batteryManager.charging ? 'Yes' : 'No';
+    level.innerText = (batteryManager.level * 100) + '%';
+    level.className = 'fa fa-battery-' + Math.round(batteryManager.level * 4);
+  });
+});
+
+// Another Promise using mouse click events with multiple outcomes
 document.addEventListener('DOMContentLoaded', function(event) {
   var click = document.getElementById('click-me');
   var last = document.getElementById('last');
